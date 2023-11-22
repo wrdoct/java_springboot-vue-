@@ -6,6 +6,7 @@ java仓库管理
 数据库：mysql
 # 项目运行
 创建数据库表：
+
 create table USER
 (
 	id int auto_increment comment '主键' primary key,
