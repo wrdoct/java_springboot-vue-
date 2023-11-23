@@ -1,6 +1,2 @@
-com\wms\service\UserService.class
-com\wms\mapper\UserMapper.class
 com\wms\WmsApplication.class
-com\wms\entity\User.class
-com\wms\service\impl\UserServiceImpl.class
-com\wms\controller\HelloController.class
+com\wms\common\CodeGenerator.class
