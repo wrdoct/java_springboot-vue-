@@ -20,3 +20,7 @@ create table USER
 	isValid VARCHAR(4) default 'Y' null comment '是否有效，Y有效，其他无效'
 )
 charset=utf8; 
+
+配置前端Vue:
+
+nodejs安装及配置参考链接：https://blog.csdn.net/qq_42006801/article/details/124830995
