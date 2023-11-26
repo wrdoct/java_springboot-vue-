@@ -109,6 +109,19 @@
             </plugin>
         </plugins>
 
+<!--        &lt;!&ndash;将mapper文件打包进去&ndash;&gt;-->
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                &lt;!&ndash;指定根目录 到源文件夹 一般如下&ndash;&gt;-->
+<!--                <directory>src/main/java</directory>-->
+<!--                <includes>-->
+<!--                    <include>**/*.properties</include>-->
+<!--                    <include>**/*.xml</include>-->
+<!--                </includes>-->
+<!--                <filtering>false</filtering>-->
+<!--            </resource>-->
+<!--        </resources>-->
+
     </build>
 
 

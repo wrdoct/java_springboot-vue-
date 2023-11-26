@@ -74,7 +74,7 @@ public class CodeGenerator {
                 .setMapper("mapper")
                 .setService("service")
                 .setServiceImpl("service.impl")
-                .setController("controller");
+                .setController("controller"); //要注意mapper.xml的文件位置，应该放在resources/mapper下，并在application.yml进行配置
         mpg.setPackageInfo(pc);
 
         //自定义配置
