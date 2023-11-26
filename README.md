@@ -24,4 +24,5 @@ charset=utf8;
 配置前端Vue:
 
 nodejs安装及配置参考链接：https://blog.csdn.net/qq_42006801/article/details/124830995
-element-ui配置注意：https://blog.csdn.net/qq_45037155/article/details/128950111
+
+element-ui配置：https://blog.csdn.net/qq_45037155/article/details/128950111
