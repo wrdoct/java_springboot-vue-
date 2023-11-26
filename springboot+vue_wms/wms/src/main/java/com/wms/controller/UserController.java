@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.common.QueryPageParam;
+import com.wms.common.Result;
 import com.wms.entity.User;
 import com.wms.service.UserService;
 import lombok.Data;
@@ -75,7 +76,8 @@ public class UserController {
     }
 
     @GetMapping("/pageC")
-    public List<User> pageC(@RequestBody QueryPageParam query){
+//    public List<User> pageC(@RequestBody QueryPageParam query){
+    public Result pageC(@RequestBody QueryPageParam query){
         Page<User> page = new Page(); //(1,2);
         page.setCurrent(query.getPageNum());
         page.setSize(query.getPageSize());
@@ -87,6 +89,7 @@ public class UserController {
         IPage<User> result = userService.pageCC(page, lambdaQueryWrapper);
         System.out.println("total = " + result.getTotal());
 
-        return result.getRecords();
+//        return result.getRecords();
+        return Result.success(result.getTotal(), result.getRecords());
     }
 }
