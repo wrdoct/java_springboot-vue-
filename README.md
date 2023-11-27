@@ -25,5 +25,4 @@ charset=utf8;
 
 nodejs安装及配置参考链接：https://blog.csdn.net/qq_42006801/article/details/124830995
 
-由于vue3.0不兼容element-ui,于是推出了element-plus：npm install element-plus --save
 
