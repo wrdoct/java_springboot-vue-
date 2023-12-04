@@ -21,6 +21,7 @@
     import Header from "@/components/Header";
     import Main from "@/components/Main";
     export default {
+        // eslint-disable-next-line vue/multi-word-component-names
         name: "Index",
         components: {Main, Header, Aside},
         data(){

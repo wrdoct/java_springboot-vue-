@@ -13,6 +13,7 @@
 
 <script>
     export default {
+        // eslint-disable-next-line vue/multi-word-component-names
         name: "Main",
         data() {
             const item = {
@@ -23,6 +24,22 @@
             return {
                 tableData: Array(10).fill(item)
             }
+        },
+        methods:{
+            loadGet(){
+                this.$axios.get(this.$httpUrl+'/user/list').then(res=>res.data).then(res=>{
+                    console.log(res)
+                })
+            },
+            loadPost(){
+                this.$axios.post(this.$httpUrl+'/user/list1', {}).then(res=>res.data).then(res=>{
+                    console.log(res)
+                })
+            }
+        },
+        beforeMount() {
+            // this.loadGet();
+            this.loadPost();
         }
     }
 </script>

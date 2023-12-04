@@ -1,8 +1,8 @@
 package com.wms.controller;
 
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
@@ -28,10 +28,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @GetMapping("/list")
-//    public List<User> list(){
-//        return userService.list();
-//    }
+    @GetMapping("/list")
+    public List<User> list(){
+        return userService.list();
+    }
 
     //新增
     @PostMapping("/add")
@@ -54,10 +54,12 @@ public class UserController {
         return userService.removeById(id);
     }
     //查询（模糊、匹配）
-    @GetMapping("/list")
+    @PostMapping("/list1")
     public List<User> list(@RequestBody User user){
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.like(User::getName, user.getName());
+        if(StringUtils.isNotBlank(user.getName())){
+            lambdaQueryWrapper.like(User::getName, user.getName());
+        }
         return userService.list(lambdaQueryWrapper);
     }
     @GetMapping("/page")

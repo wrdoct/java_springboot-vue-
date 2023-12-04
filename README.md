@@ -25,4 +25,6 @@ charset=utf8;
 
 nodejs安装及配置参考链接：https://blog.csdn.net/qq_42006801/article/details/124830995
 
+另一种跨域解决方案：https://blog.csdn.net/caoyuan258/article/details/111240177
+
 

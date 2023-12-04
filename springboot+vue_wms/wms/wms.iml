@@ -2,7 +2,14 @@
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="spring-boot-dispatcherServletAutoConfiguration-mvc" name="WmsApplication MVC" removed="true">
+          <file>file://$MODULE_DIR$/src/main/java/com/wms/WmsApplication.java</file>
+        </fileset>
+        <fileset id="spring_boot_com.wms.WmsApplication" name="WmsApplication" removed="true">
+          <file>file://$MODULE_DIR$/src/main/java/com/wms/WmsApplication.java</file>
+        </fileset>
+      </configuration>
     </facet>
     <facet type="web" name="Web">
       <configuration>
