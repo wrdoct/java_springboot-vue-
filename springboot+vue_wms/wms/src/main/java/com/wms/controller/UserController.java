@@ -29,8 +29,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/list")
-    public List<User> list(){
-        return userService.list();
+    public Result list(){
+        return Result.success(userService.list());
     }
 
     //新增
@@ -70,14 +70,16 @@ public class UserController {
 
         String name = (String)query.getParam().get("name");
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.like(User::getName, name);
+        if (StringUtils.isNotBlank(name) && !name.equals("null")){
+            lambdaQueryWrapper.like(User::getName, name);
+        }
         IPage<User> result = userService.page(page, lambdaQueryWrapper);
         System.out.println("total = " + result.getTotal());
 
         return result.getRecords();
     }
 
-    @GetMapping("/pageC")
+    @PostMapping("/pageC")
 //    public List<User> pageC(@RequestBody QueryPageParam query){
     public Result pageC(@RequestBody QueryPageParam query){
         Page<User> page = new Page(); //(1,2);
@@ -86,7 +88,9 @@ public class UserController {
 
         String name = (String)query.getParam().get("name");
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.like(User::getName, name);
+        if (StringUtils.isNotBlank(name) && !name.equals("null")){
+            lambdaQueryWrapper.like(User::getName, name);
+        }
 //        IPage<User> result = userService.pageC(page);
         IPage<User> result = userService.pageCC(page, lambdaQueryWrapper);
         System.out.println("total = " + result.getTotal());

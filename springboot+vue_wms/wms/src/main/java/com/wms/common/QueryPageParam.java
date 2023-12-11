@@ -13,5 +13,5 @@ public class QueryPageParam {
     private int PageSize = PAGE_SIZE;
     private int pageNum = PAGE_NUM;
 
-    private HashMap param; //会自动存储参数及值
+    private HashMap param = new HashMap(); //会自动存储参数及值
 }
