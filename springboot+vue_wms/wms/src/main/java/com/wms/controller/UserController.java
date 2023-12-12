@@ -87,10 +87,16 @@ public class UserController {
         page.setSize(query.getPageSize());
 
         String name = (String)query.getParam().get("name");
+        String sex = (String)query.getParam().get("sex");
+
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper();
         if (StringUtils.isNotBlank(name) && !name.equals("null")){
             lambdaQueryWrapper.like(User::getName, name);
         }
+        if (StringUtils.isNotBlank(sex) && !sex.equals("null")){
+            lambdaQueryWrapper.eq(User::getSex, sex);
+        }
+
 //        IPage<User> result = userService.pageC(page);
         IPage<User> result = userService.pageCC(page, lambdaQueryWrapper);
         System.out.println("total = " + result.getTotal());

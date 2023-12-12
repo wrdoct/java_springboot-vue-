@@ -9,7 +9,8 @@ Vue.prototype.$httpUrl='http://localhost:8090'
 
 Vue.config.productionTip = false
 
-Vue.use(ElementUI);
+// Vue.use(ElementUI);
+Vue.use(ElementUI, {size:'small'});
 
 new Vue({
   render: h => h(App),
