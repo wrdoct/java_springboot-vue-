@@ -33,10 +33,16 @@ public class UserController {
         return Result.success(userService.list());
     }
 
+    @GetMapping("/findByNo")
+    public Result findByNo(@RequestParam(value = "no") String no){
+        List<User> list = userService.lambdaQuery().eq(User::getNo, no).list();
+        return list.size() > 0 ? Result.success(list) : Result.fail();
+    }
+
     //新增
     @PostMapping("/add")
-    public boolean add(@RequestBody User user){
-        return userService.save(user);
+    public Result add(@RequestBody User user){
+        return userService.save(user) ? Result.success() : Result.fail();
     }
     //修改
     @PutMapping("/mod")
