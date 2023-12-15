@@ -33,6 +33,32 @@ public class UserController {
         return Result.success(userService.list());
     }
 
+    @PostMapping("/pageC")
+//    public List<User> pageC(@RequestBody QueryPageParam query){
+    public Result pageC(@RequestBody QueryPageParam query){
+        Page<User> page = new Page(); //(1,2);
+        page.setCurrent(query.getPageNum());
+        page.setSize(query.getPageSize());
+
+        String name = (String)query.getParam().get("name");
+        String sex = (String)query.getParam().get("sex");
+
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper();
+        if (StringUtils.isNotBlank(name) && !name.equals("null")){
+            lambdaQueryWrapper.like(User::getName, name);
+        }
+        if (StringUtils.isNotBlank(sex) && !sex.equals("null")){
+            lambdaQueryWrapper.eq(User::getSex, sex);
+        }
+
+//        IPage<User> result = userService.pageC(page);
+        IPage<User> result = userService.pageCC(page, lambdaQueryWrapper);
+        System.out.println("total = " + result.getTotal());
+
+//        return result.getRecords();
+        return Result.success(result.getTotal(), result.getRecords());
+    }
+
     @GetMapping("/findByNo")
     public Result findByNo(@RequestParam(value = "no") String no){
         List<User> list = userService.lambdaQuery().eq(User::getNo, no).list();
@@ -44,6 +70,18 @@ public class UserController {
     public Result add(@RequestBody User user){
         return userService.save(user) ? Result.success() : Result.fail();
     }
+    //更新
+    @PutMapping("/update")
+    public Result update(@RequestBody User user){
+        return userService.updateById(user) ? Result.success() : Result.fail();
+    }
+    //删除
+    @DeleteMapping("/del")
+    public Result del(@RequestParam String id){
+        return userService.removeById(id) ? Result.success() : Result.fail();
+    }
+
+
     //修改
     @PutMapping("/mod")
     public boolean mod(@RequestBody User user){
@@ -83,31 +121,5 @@ public class UserController {
         System.out.println("total = " + result.getTotal());
 
         return result.getRecords();
-    }
-
-    @PostMapping("/pageC")
-//    public List<User> pageC(@RequestBody QueryPageParam query){
-    public Result pageC(@RequestBody QueryPageParam query){
-        Page<User> page = new Page(); //(1,2);
-        page.setCurrent(query.getPageNum());
-        page.setSize(query.getPageSize());
-
-        String name = (String)query.getParam().get("name");
-        String sex = (String)query.getParam().get("sex");
-
-        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper();
-        if (StringUtils.isNotBlank(name) && !name.equals("null")){
-            lambdaQueryWrapper.like(User::getName, name);
-        }
-        if (StringUtils.isNotBlank(sex) && !sex.equals("null")){
-            lambdaQueryWrapper.eq(User::getSex, sex);
-        }
-
-//        IPage<User> result = userService.pageC(page);
-        IPage<User> result = userService.pageCC(page, lambdaQueryWrapper);
-        System.out.println("total = " + result.getTotal());
-
-//        return result.getRecords();
-        return Result.success(result.getTotal(), result.getRecords());
     }
 }

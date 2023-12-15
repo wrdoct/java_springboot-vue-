@@ -45,8 +45,12 @@
             <el-table-column prop="phone" label="电话" width="180">
             </el-table-column>
             <el-table-column prop="operate" label="操作">
-                <el-button size="small" type="success">编辑</el-button>
-                <el-button size="small" type="danger">删除</el-button>
+                <template slot-scope="scope">
+                    <el-button size="small" type="success" @click="mod(scope.row)">编辑</el-button>
+                    <el-popconfirm title="确定删除吗？" style="margin-left: 5px" @confirm="del(scope.row.id)">
+                        <el-button slot="reference" size="small" type="danger">删除</el-button>
+                    </el-popconfirm>
+                </template>
             </el-table-column>
         </el-table>
         <el-pagination
@@ -97,8 +101,8 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="centerDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
+                <el-button @click="centerDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="save">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -147,8 +151,9 @@
                 ],
                 centerDialogVisible:false,
                 form:{
-                    name:'',
+                    id:'',
                     no:'',
+                    name:'',
                     password:'',
                     age:'',
                     phone:'',
@@ -212,7 +217,7 @@
                         sex:this.sex
                     }
                 }).then(res=>res.data).then(res=>{
-                    console.log(res)
+                    // console.log(res)
                     if(res.code==200){
                         this.tableData=res.data
                         this.total=res.total
@@ -231,26 +236,33 @@
                     this.resetForm();
                 })
             },
+            doSave(){
+                this.$axios.post(this.$httpUrl+'/user/add',this.form).then(res=>res.data).then(res=>{
+                    // console.log(res)
+                    if(res.code==200){
+                        this.$message({
+                            message: '操作成功！',
+                            type: 'success'
+                        });
+                        this.centerDialogVisible=false
+                        this.loadPost()
+                        // this.resetForm()
+                    }else{
+                        this.$message({
+                            message: '操作失败！',
+                            type: 'error'
+                        });
+                    }
+                })
+            },
             save(){
                 this.$refs.form.validate((valid) => {
                     if (valid) {
-                        this.$axios.post(this.$httpUrl+'/user/add',this.form).then(res=>res.data).then(res=>{
-                            console.log(res)
-                            if(res.code==200){
-                                this.$message({
-                                    message: '操作成功！',
-                                    type: 'success'
-                                });
-                                this.centerDialogVisible=false
-                                this.loadPost()
-                                // this.resetForm()
-                            }else{
-                                this.$message({
-                                    message: '操作失败！',
-                                    type: 'error'
-                                });
-                            }
-                        })
+                        if(this.form.id){
+                            this.doMod();
+                        }else {
+                            this.doSave();
+                        }
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -258,7 +270,59 @@
                 });
             },
             resetForm() {
-                this.$refs.form.resetFields();
+                this.$refs.form.resetFields(); //复位到窗口的初始值
+            },
+            doMod(){
+                this.$axios.put(this.$httpUrl+'/user/update',this.form).then(res=>res.data).then(res=>{
+                    // console.log(res)
+                    if(res.code==200){
+                        this.$message({
+                            message: '操作成功！',
+                            type: 'success'
+                        });
+                        this.centerDialogVisible=false
+                        this.loadPost()
+                        // this.resetForm()
+                    }else{
+                        this.$message({
+                            message: '操作失败！',
+                            type: 'error'
+                        });
+                    }
+                })
+            },
+            mod(row){
+                // console.log(row)
+                this.centerDialogVisible=true
+                this.$nextTick(()=>{
+                    //赋值到表单
+                    this.form.id = row.id
+                    this.form.no = row.no
+                    this.form.name = row.name
+                    this.form.password = ''
+                    this.form.age = row.age+''
+                    this.form.sex = row.sex+''
+                    this.form.phone = row.phone
+                    this.form.roleId = row.roleId
+                })
+            },
+            del(id){
+                // console.log(id)
+                this.$axios.delete(this.$httpUrl+'/user/del?id='+id).then(res=>res.data).then(res=>{
+                    // console.log(res)
+                    if(res.code==200){
+                        this.$message({
+                            message: '操作成功！',
+                            type: 'success'
+                        });
+                        this.loadPost()
+                    }else{
+                        this.$message({
+                            message: '操作失败！',
+                            type: 'error'
+                        });
+                    }
+                })
             }
         },
         beforeMount() {
