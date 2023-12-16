@@ -81,6 +81,16 @@ public class UserController {
         return userService.removeById(id) ? Result.success() : Result.fail();
     }
 
+    //登录
+    @PostMapping("/login")
+    public Result login(@RequestBody User user){
+        List list = userService.lambdaQuery()
+                .eq(User::getNo, user.getNo())
+                .eq(User::getPassword, user.getPassword()).list();
+        return list.size()>0 ? Result.success(list.get(0)) : Result.fail();
+    }
+
+
 
     //修改
     @PutMapping("/mod")
