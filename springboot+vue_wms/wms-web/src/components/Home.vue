@@ -1,7 +1,7 @@
 <template>
-    <div style="flex: 1;text-align: center;font-size: 34px;">
-        <h1 style="flex: 1;text-align: center;font-size: 34px;">欢迎来到仓库管理系统</h1>
-        <el-descriptions :title="'欢迎你!'+user.name" :column="2" size="40" border>
+    <div style="text-align: center;background-color: #f1f1f3;height: 100%;padding: 0px;margin: 0px;">
+        <h1 style="font-size: 50px;">{{'欢迎你！'+user.name}}</h1>
+        <el-descriptions  title="个人中心" :column="2" size="40" border>
             <el-descriptions-item>
                 <template slot="label">
                     <i class="el-icon-s-custom"></i>
@@ -43,7 +43,7 @@
     export default {
         // eslint-disable-next-line vue/multi-word-component-names
         name: "Home",
-        comments:{DateUtils},
+        components:{DateUtils},
         data(){
             return{
                 user:{}
@@ -54,12 +54,20 @@
         },
         methods:{
             init(){
-                this.user = JSON.parse(sessionStorage.getTime('CurUser'))
+                this.user = JSON.parse(sessionStorage.getItem('CurUser'))
             }
+        },
+        created() {
+            this.init()
         }
     }
 </script>
 
 <style scoped>
+    .el-descriptions{
+        width:90%;
 
+        margin: 0 auto;
+        text-align: center;
+    }
 </style>

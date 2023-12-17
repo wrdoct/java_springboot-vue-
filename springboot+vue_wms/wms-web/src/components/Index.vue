@@ -1,6 +1,6 @@
 <template>
     <el-container style="height: 100%; border: 1px solid #eee">
-        <el-aside :width="aside_width" style="background-color: rgb(238, 241, 246); height: 100%; margin-left: -1px">
+        <el-aside :width="aside_width" style="background-color: rgb(238, 241, 246); height: 100vh; margin-left: -1px">
             <Aside :isCollapse="isCollapse"></Aside>
         </el-aside>
 
@@ -10,7 +10,8 @@
             </el-header>
 
             <el-main style = "height: 100%">
-                <Main></Main>
+<!--                <Main></Main>-->
+                <router-view/>
             </el-main>
         </el-container>
     </el-container>
@@ -19,11 +20,11 @@
 <script>
     import Aside from "@/components/Aside";
     import Header from "@/components/Header";
-    import Main from "@/components/Main";
+    // import Main from "@/components/Main";
     export default {
         // eslint-disable-next-line vue/multi-word-component-names
         name: "Index",
-        components: {Main, Header, Aside},
+        components: {Header, Aside}, // {Main, Header, Aside},
         data(){
             return {
                 isCollapse:false,

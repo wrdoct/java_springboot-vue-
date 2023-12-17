@@ -3,22 +3,22 @@
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b"
-            default-active="/Home"
+            default-active="/home"
             :collapse="isCollapse"
             :collapse-transition="false"
-            style="height: 100vh">
-        <el-menu-item index="/Home">
+            router
+            style="height: 100%">
+
+        <el-menu-item index="/home">
             <i class="el-icon-s-home"></i>
             <span slot="title">首页</span>
         </el-menu-item>
-        <el-menu-item index="/One">
-            <i class="el-icon-s-flag"></i>
-            <span slot="title">导航一</span>
+
+        <el-menu-item :index="'/'+item.menuClick" v-for="(item,i) in menu" :key="i">
+            <i :class="item.menuIcon"></i>
+            <span slot="title">{{item.menuName}}</span>
         </el-menu-item>
-        <el-menu-item index="/Two">
-            <i class="el-icon-s-opportunity"></i>
-            <span slot="title">导航二</span>
-        </el-menu-item>
+
     </el-menu>
 </template>
 
@@ -29,6 +29,18 @@
         data(){
             return {
                 // isCollapse:false
+                menu:[
+                    {
+                        menuClick:'admin',
+                        menuName:'管理员管理',
+                        menuIcon:'el-icon-s-custom'
+                    },
+                    {
+                        menuClick:'user',
+                        menuName:'用户管理',
+                        menuIcon:'el-icon-user-solid'
+                    }
+                ]
             }
         },
         props:{

@@ -32,6 +32,7 @@
         methods:{
             toUser(){
                 console.log('to_user')
+                this.$router.push('/home')
             },
             logOut(){
                 console.log('log_out')
@@ -56,6 +57,9 @@
             collapse(){
                 this.$emit('doCollapse')
             }
+        },
+        created() {
+            this.$router.push('/home')
         }
     }
 </script>
