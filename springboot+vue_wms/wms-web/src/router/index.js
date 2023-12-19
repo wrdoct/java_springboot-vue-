@@ -43,7 +43,7 @@ const routes = [
 
 const router = new VueRouter({
     model:'history',
-    routes
+    routes:routes
 })
 
 export function resetRouter() {
