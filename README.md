@@ -14,7 +14,9 @@ nodejs安装及配置参考链接：https://blog.csdn.net/qq_42006801/article/de
 
 另一种跨域解决方案：https://blog.csdn.net/caoyuan258/article/details/111240177
 
-前端安装路由插件：npm install vue-router@3
+前端安装路由插件：npm install vue-router@2.8.0 -S
 
 前端安装vuex状态管理工具：npm install vuex@3.0.0
 
+## 后端
+代码生成器：springboot+vue_wms\wms\src\main\java\com\wms\common\CodeGenerator

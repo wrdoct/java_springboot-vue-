@@ -1,5 +1,5 @@
 <template>
-    
+    <span>admin</span>
 </template>
 
 <script>

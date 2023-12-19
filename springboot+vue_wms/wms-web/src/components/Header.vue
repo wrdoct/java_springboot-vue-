@@ -18,6 +18,9 @@
 </template>
 
 <script>
+
+    import router from "../router"
+
     export default {
         // eslint-disable-next-line vue/multi-word-component-names
         name: "Header",
@@ -32,7 +35,7 @@
         methods:{
             toUser(){
                 console.log('to_user')
-                this.$router.push('/home')
+                this.$router.push("/home")
             },
             logOut(){
                 console.log('log_out')
@@ -60,6 +63,7 @@
         },
         created() {
             this.$router.push('/home')
+            // this.$router.replace('/home')
         }
     }
 </script>

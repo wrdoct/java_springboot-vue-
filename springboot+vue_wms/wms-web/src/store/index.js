@@ -1,14 +1,15 @@
 import vue from 'vue'
 import Vuex from 'vuex'
-import router,{resetRouter} from "../router";
+import router from "../router";
+import {resetRouter} from "../router"
 vue.use(Vuex)
 
 function addNewRoute(menuList) {
-    console.log(menuList)
+    // console.log(menuList)
     let routes = router.options.routes
-    console.log(routes)
+    // console.log(routes)
     routes.forEach(routeItem=>{
-        if(routeItem.path=="/Index"){
+        if(routeItem.path=="/index"){
             menuList.forEach(menu=>{
                 let childRoute =  {
                     path:'/'+menu.menuclick,
@@ -36,7 +37,7 @@ export default new Vuex.Store({
         setMenu(state,menuList) {
             state.menu = menuList
 
-            // addNewRoute(menuList)
+            addNewRoute(menuList)
         }
     },
     getters: {
