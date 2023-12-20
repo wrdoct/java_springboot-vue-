@@ -42,7 +42,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    model:'history',
+    mode:'history',  // 去掉url中的#
     routes:routes
 })
 
@@ -53,9 +53,14 @@ export function resetRouter() {
     }).matcher
 }
 
+// 防止连续点击多次路由报错
 const VueRouterPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
     return VueRouterPush.call(this, location).catch(err => err)
+}
+const VueRouterReplace = VueRouter.prototype.replace
+VueRouter.prototype.replace = function push(location) {
+    return VueRouterReplace.call(this, location).catch(err => err)
 }
 
 export default router;

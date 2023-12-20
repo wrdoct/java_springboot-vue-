@@ -47,6 +47,7 @@ public class UserController {
 
         String name = (String)query.getParam().get("name");
         String sex = (String)query.getParam().get("sex");
+        String roleId = (String)query.getParam().get("roleId");
 
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper();
         if (StringUtils.isNotBlank(name) && !name.equals("null")){
@@ -54,6 +55,9 @@ public class UserController {
         }
         if (StringUtils.isNotBlank(sex) && !sex.equals("null")){
             lambdaQueryWrapper.eq(User::getSex, sex);
+        }
+        if (StringUtils.isNotBlank(roleId) && !roleId.equals("null")){
+            lambdaQueryWrapper.eq(User::getRoleId, roleId);
         }
 
 //        IPage<User> result = userService.pageC(page);
