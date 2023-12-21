@@ -1,7 +1,7 @@
 <template>
     <div>
         <div style="margin-bottom: 5px;">
-            <el-input v-model="name" clearable placeholder="请输入仓库名" suffix-icon="el-icon-search" style="width: 200px;"
+            <el-input v-model="name" clearable placeholder="请输入分类名" suffix-icon="el-icon-search" style="width: 200px;"
                       @keyup.enter.native="loadPost"></el-input>
             <el-button type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
             <el-button type="success" @click="resetParam">重置</el-button>
@@ -14,7 +14,7 @@
         >
             <el-table-column prop="id" label="ID" width="60">
             </el-table-column>
-            <el-table-column prop="name" label="仓库名" width="180">
+            <el-table-column prop="name" label="分类名" width="180">
             </el-table-column>
             <el-table-column prop="remark" label="备注">
             </el-table-column>
@@ -42,7 +42,7 @@
                 width="30%"
                 center>
             <el-form ref="form" :rules="rules" :model="form" label-width="80px">
-                <el-form-item label="仓库名" prop="name">
+                <el-form-item label="分类名" prop="name">
                     <el-col :span="20">
                         <el-input v-model="form.name"></el-input>
                     </el-col>
@@ -64,7 +64,7 @@
 <script>
     export default {
         // eslint-disable-next-line vue/multi-word-component-names
-        name: "StorageManage",
+        name: "GoodstypeManage",
         data() {
             return {
                 tableData: [],
@@ -80,7 +80,7 @@
                 },
                 rules: {
                     name: [
-                        {required: true, message: '请输入仓库名', trigger: 'blur'},
+                        {required: true, message: '请输入分类名', trigger: 'blur'},
                     ],
                 }
             }
@@ -108,7 +108,7 @@
             //     })
             // },
             loadPost(){
-                this.$axios.post(this.$httpUrl+'/storage/page',{
+                this.$axios.post(this.$httpUrl+'/goodstype/page',{
                     pageSize:this.pageSize,
                     pageNum:this.pageNum,
                     param:{
@@ -134,7 +134,7 @@
                 })
             },
             doSave(){
-                this.$axios.post(this.$httpUrl+'/storage/add',this.form).then(res=>res.data).then(res=>{
+                this.$axios.post(this.$httpUrl+'/goodstype/add',this.form).then(res=>res.data).then(res=>{
                     // console.log(res)
                     if(res.code==200){
                         this.$message({
@@ -170,7 +170,7 @@
                 this.$refs.form.resetFields(); //复位到窗口的初始值
             },
             doMod(){
-                this.$axios.put(this.$httpUrl+'/storage/update',this.form).then(res=>res.data).then(res=>{
+                this.$axios.put(this.$httpUrl+'/goodstype/update',this.form).then(res=>res.data).then(res=>{
                     // console.log(res)
                     if(res.code==200){
                         this.$message({
@@ -200,7 +200,7 @@
             },
             del(id){
                 // console.log(id)
-                this.$axios.delete(this.$httpUrl+'/storage/del?id='+id).then(res=>res.data).then(res=>{
+                this.$axios.delete(this.$httpUrl+'/goodstype/del?id='+id).then(res=>res.data).then(res=>{
                     // console.log(res)
                     if(res.code==200){
                         this.$message({
