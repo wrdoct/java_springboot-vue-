@@ -12,6 +12,8 @@ import com.wms.service.GoodstypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  *  前端控制器
@@ -42,7 +44,13 @@ public class GoodstypeController {
 
         return Result.success(result.getTotal(), result.getRecords());
     }
-    
+
+    @GetMapping("/list")
+    public Result list(){
+        List<Goodstype> list = goodstypeService.lambdaQuery().list();
+        return Result.success(list);
+    }
+
     //新增
     @PostMapping("/add")
     public Result add(@RequestBody Goodstype goodstype){

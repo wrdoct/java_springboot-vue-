@@ -16,5 +16,8 @@
     <sql id="Base_Column_List">
         id, name, storage, goodsType, count, remark
     </sql>
+    <select id="selectGoodsPage" resultType="com.wms.entity.Goods">
+        select * from goods ${ew.customSqlSegment}
+    </select>
 
 </mapper>

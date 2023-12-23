@@ -12,6 +12,8 @@ import com.wms.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  *  前端控制器
@@ -41,6 +43,12 @@ public class StorageController {
         IPage<Storage> result = storageService.selectStoragePage(page, lambdaQueryWrapper); // 使用条件构造器作为参数
 
         return Result.success(result.getTotal(), result.getRecords());
+    }
+
+    @GetMapping("/list")
+    public Result list(){
+        List<Storage> list = storageService.lambdaQuery().list();
+        return Result.success(list);
     }
 
     //新增
