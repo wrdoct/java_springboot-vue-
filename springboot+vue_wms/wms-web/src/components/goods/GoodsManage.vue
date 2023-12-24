@@ -22,12 +22,22 @@
             <el-button type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
             <el-button type="success" @click="resetParam">重置</el-button>
             <el-button type="primary" style="margin-left: 5px;" @click="add">新增</el-button>
+            <el-button type="danger" style="float: right; margin-right: 5px;" @click="outGoods">出库</el-button>
+            <el-button type="primary" style="float: right" @click="inGoods">入库</el-button>
         </div>
         <el-table :data="tableData"
                   :header-cell-style="{background:'#f2f5fc', color:'#555'}"
                   border
                   style="width: 100%;margin-top: 10px"
+                  highlight-current-row
+                  @current-change="selectCurrentChange"
         >
+<!--                  @selection-change="handleSelectionChange"-->
+<!--            <el-table-column-->
+<!--                    type="selection"-->
+<!--                    width="55">-->
+<!--                    选中多行-->
+<!--            </el-table-column>-->
             <el-table-column prop="id" label="ID" width="60">
             </el-table-column>
             <el-table-column prop="name" label="物品名" width="100">
@@ -59,7 +69,7 @@
                 :total="total">
         </el-pagination>
         <el-dialog
-                title="提示"
+                title="物品维护"
                 :visible.sync="centerDialogVisible"
                 width="30%"
                 center>
@@ -111,13 +121,60 @@
                 <el-button type="primary" @click="save">确 定</el-button>
             </span>
         </el-dialog>
+
+        <el-dialog
+                title="出入库"
+                :visible.sync="inDialogVisible"
+                width="30%"
+                center>
+            <el-dialog
+                    width="70%"
+                    title="用户选择"
+                    :visible.sync="innerVisible"
+                    append-to-body>
+                <SelectUser @doSelectUser="doSelectUser"></SelectUser>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="innerVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="confirmUser">确 定</el-button>
+                </span>
+            </el-dialog>
+            <el-form ref="form1" :rules="rules1" :model="form1" label-width="80px">
+                <el-form-item label="物品名">
+                    <el-col :span="20">
+                        <el-input v-model="form1.goodsname" readonly></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="申请人">
+                    <el-col :span="20">
+                        <el-input v-model="form1.username" readonly @click.native="selectUser"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="数量" prop="count">
+                    <el-col :span="20">
+                        <el-input v-model="form1.count"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="备注" prop="remark">
+                    <el-col :span="20">
+                        <el-input type="textarea" v-model="form1.remark"></el-input>
+                    </el-col>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="inDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="doInOutGoods">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+
+    import SelectUser from "@/components/user/SelectUser";
     export default {
         // eslint-disable-next-line vue/multi-word-component-names
         name: "GoodsManage",
+        components: {SelectUser},
         data() {
             let checkCount = (rule, value, callback) => {
                 if(value>9999){
@@ -142,6 +199,16 @@
                     count:'',
                     remark:''
                 },
+                form1:{
+                    goods:'',
+                    goodsname:'',
+                    count:'',
+                    username:'',
+                    userid:'',
+                    adminId:'',
+                    remark:'',
+                    action:'1'
+                },
                 rules: {
                     name: [
                         {required: true, message: '请输入物品名', trigger: 'blur'},
@@ -158,10 +225,23 @@
                         {validator:checkCount,trigger: 'blur'}
                     ],
                 },
+                rules1: {
+                    count: [
+                        {required: false, message: '请输入数量', trigger: 'blur'},
+                        {pattern: /^([1-9][0-9]*){1,4}$/,message: '数量必须为正整数字',trigger: "blur"},
+                        {validator:checkCount,trigger: 'blur'}
+                    ],
+                },
                 storageData:[],
                 goodstypeData:[],
                 storage:'',
-                goodstype:''
+                goodstype:'',
+                inDialogVisible:false,
+                // multipleSelection:{} // 选中多行
+                currentRow:{},
+                user:JSON.parse(sessionStorage.getItem('CurUser')),
+                innerVisible:false,
+                tmpUser:{}
             }
         },
         methods:{
@@ -326,6 +406,88 @@
                     return item ?.id == row.goodstype;
                 });
                 return obj ?.name;
+            },
+            resetInForm() {
+                this.$refs.form1.resetFields(); //复位到窗口的初始值
+            },
+            inGoods(){
+                /* // 选中多行
+                let arrayGoods = this.multipleSelection;
+                if (arrayGoods == undefined || arrayGoods.length <= 0){
+                    alert('请选择记录');
+                    return;
+                }
+                for (let i = 0; i < arrayGoods.length; i++){
+                    if (!arrayGoods[i].id){
+                        alert('请选择记录');
+                        return;
+                    }
+                }*/
+                this.form1.username=''; //每次点击入库时先清空当前的申请人
+                if(!this.currentRow.id){
+                    alert('请选择记录');
+                    return;
+                }
+
+                this.inDialogVisible=true
+                this.$nextTick(()=>{
+                    this.resetInForm();
+                })
+                this.form1.goodsname = this.currentRow.name
+                this.form1.goods = this.currentRow.id
+                this.form1.adminId = this.user.id
+                this.form1.action = '1' // 入库
+            },
+            doInOutGoods(){
+                this.$axios.post(this.$httpUrl+'/record/save',this.form1).then(res=>res.data).then(res=>{
+                    // console.log(res)
+                    if(res.code==200){
+                        this.$message({
+                            message: '操作成功！',
+                            type: 'success'
+                        });
+                        this.inDialogVisible=false
+                        this.loadPost()
+                        // this.resetInForm()
+                    }else{
+                        this.$message({
+                            message: '操作失败！',
+                            type: 'error'
+                        });
+                    }
+                })
+            },
+            selectCurrentChange(val) {
+                // this.multipleSelection = val;// 选中多行
+                this.currentRow = val;
+            },
+            selectUser(){
+                this.innerVisible = true;
+            },
+            doSelectUser(val){
+                // console.log(val)
+                this.tmpUser = val;
+
+            },
+            confirmUser(){
+                this.form1.userid = this.tmpUser.id;
+                this.form1.username = this.tmpUser.name;
+                this.innerVisible = false;
+            },
+            outGoods(){
+                if(!this.currentRow.id){
+                    alert('请选择记录');
+                    return;
+                }
+
+                this.inDialogVisible=true
+                this.$nextTick(()=>{
+                    this.resetInForm();
+                })
+                this.form1.goodsname = this.currentRow.name
+                this.form1.goods = this.currentRow.id
+                this.form1.adminId = this.user.id
+                this.form1.action = '2' // 出库
             },
         },
         beforeMount() {

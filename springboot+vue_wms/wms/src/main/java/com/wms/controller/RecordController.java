@@ -8,7 +8,10 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
+import com.wms.entity.Goods;
 import com.wms.entity.Record;
+import com.wms.entity.Record;
+import com.wms.service.GoodsService;
 import com.wms.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * <p>
@@ -31,6 +37,9 @@ public class RecordController {
 
     @Autowired
     private RecordService recordService;
+
+    @Autowired
+    private GoodsService goodsService;
 
     @PostMapping("/page")
     public Result page(@RequestBody QueryPageParam query){
@@ -53,5 +62,23 @@ public class RecordController {
         IPage<Record> result = recordService.selectRecordPage(page, queryWrapper); // 使用条件构造器作为参数
 
         return Result.success(result.getTotal(), result.getRecords());
+    }
+
+    //新增
+    @PostMapping("/save")
+    public Result save(@RequestBody Record record){
+        Date date = new Date();
+        record.setCreatetime(date);
+
+        Integer num = record.getCount();
+        Goods goods = goodsService.getById(record.getGoods());
+        if(record.getAction().equals("1")){ // 入库
+            goods.setCount(goods.getCount() + num);
+        }else if(record.getAction().equals("2")){ //出库
+            goods.setCount(goods.getCount() - num);
+            record.setCount(-num);
+        }
+        goodsService.updateById(goods);
+        return recordService.save(record) ? Result.success() : Result.fail();
     }
 }

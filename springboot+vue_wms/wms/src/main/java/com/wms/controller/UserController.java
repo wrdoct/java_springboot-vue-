@@ -62,7 +62,7 @@ public class UserController {
 
 //        IPage<User> result = userService.pageC(page);
         IPage<User> result = userService.pageCC(page, lambdaQueryWrapper);
-        System.out.println("total = " + result.getTotal());
+//        System.out.println("total = " + result.getTotal());
 
 //        return result.getRecords();
         return Result.success(result.getTotal(), result.getRecords());
