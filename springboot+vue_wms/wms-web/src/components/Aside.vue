@@ -3,7 +3,7 @@
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b"
-            default-active="/home"
+            :default-active="$route.path"
             :collapse="isCollapse"
             :collapse-transition="false"
             router
