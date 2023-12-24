@@ -83,7 +83,8 @@
                 storageData:[],
                 goodstypeData:[],
                 storage:'',  // 实际上是id——选择仓库时的:value值
-                goodstype:'' // 实际上是id——选择分类时的:value值
+                goodstype:'', // 实际上是id——选择分类时的:value值
+                user:JSON.parse(sessionStorage.getItem('CurUser')),
             }
         },
         methods:{
@@ -106,6 +107,8 @@
                         name:this.name,
                         storage:this.storage+'', // +''是为了确保是字符型（Integer转String）
                         goodstype:this.goodstype+'',
+                        roleId:this.user.roleId + '',
+                        userId:this.user.id + '',
                     }
                 }).then(res=>res.data).then(res=>{
                     // console.log(res)

@@ -50,6 +50,8 @@ public class RecordController {
         String name = (String)query.getParam().get("name");
         String storage = (String)query.getParam().get("storage");
         String goodstype = (String)query.getParam().get("goodstype");
+        String roleId = (String)query.getParam().get("roleId");
+        String userId = (String)query.getParam().get("userId");
 
         QueryWrapper<Record> queryWrapper = new QueryWrapper();
         queryWrapper.apply(" r.goods=g.id\n" +
@@ -58,6 +60,11 @@ public class RecordController {
         queryWrapper.like(StringUtils.isNotBlank(name) && !"null".equals(name),"g.name", name)
                 .eq(StringUtils.isNotBlank(storage) && !"null".equals(storage),"s.id", storage)
                 .eq(StringUtils.isNotBlank(goodstype) && !"null".equals(goodstype),"gt.id", goodstype);
+
+        if (roleId.equals("2")){
+            queryWrapper.lambda().eq(Record::getUserid, userId);
+//            queryWrapper.apply("r.userId = " + userId);
+        }
 
         IPage<Record> result = recordService.selectRecordPage(page, queryWrapper); // 使用条件构造器作为参数
 
